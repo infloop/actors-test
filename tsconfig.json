@@ -1,0 +1,23 @@
+{
+  "version": "2.5.2",
+  "compilerOptions": {
+    "allowJs": false,
+    "strictNullChecks": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES2015",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "outDir": "dist"
+  },
+  "exclude": [
+    "node_modules",
+    "definitions"
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "compileOnSave": true
+}

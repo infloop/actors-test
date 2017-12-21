@@ -4,6 +4,7 @@
   "description": "Testing actors in Node.js",
   "main": "index.js",
   "scripts": {
+    "t01": "node ./dist/test-01/index.js",
     "clean": "rimraf ./dist/*",
     "build": "npm run clean && npm run tsc",
     "tsc": "tsc"
@@ -22,11 +23,13 @@
   },
   "homepage": "https://github.com/infloop/actors-test#readme",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "comedy": "^1.2.5",
     "lodash": "^4.12.0",
     "reflect-metadata": "^0.1.8"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.19",
     "@types/lodash": "4.14.62",
     "@types/node": "^6.0.61",
     "publish-please": "^2.2.0",

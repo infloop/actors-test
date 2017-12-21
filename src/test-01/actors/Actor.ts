@@ -1,7 +1,10 @@
 
+import * as _ from 'lodash';
+
 export class Actor {
-  sayHello(to) {
-    console.log(`Hello, ${to}!`);
+  calc(to: string, numbers: number[]) {
+
+    return { to, pid: process.pid, sum: _.reduce(numbers, (i, r) => r + i, 0) };
   }
 }
 

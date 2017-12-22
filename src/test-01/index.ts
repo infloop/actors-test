@@ -18,8 +18,8 @@ function diviteToIntervals(end: number, n: number): Interval[] {
   return r;
 }
 
-let maxNumber: number = 100000;
-let numWorkers = 8;
+let maxNumber: number = 1000000;
+let numWorkers = 64;
 
 let actorSystem = createSystem({});
 

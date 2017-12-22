@@ -1,7 +1,7 @@
 /**
  * Actor that finds prime numbers.
  */
-class PrimeFinderActor {
+export class PrimeFinder {
   /**
    * Finds next prime, starting from a given number (not inclusive).
    *
@@ -10,15 +10,34 @@ class PrimeFinderActor {
    * @returns {Number} Prime number next to n.
    */
   nextPrime(n, m) {
-    if (n < 1) throw new Error('Illegal input');
+    if (n < 0) throw new Error('Illegal input');
 
     const n0 = n + 1;
 
-    if()
+    if (n0 > m) {
+      return null;
+    }
 
     if (this._isPrime(n0)) return n0;
 
     return this.nextPrime(n0, m);
+  }
+
+  findPrimes(n, m): number[] {
+    let res:number[] = [];
+    let n0 = 0;
+
+    while(1) {
+      n0 = this.nextPrime(n, m);
+      if (!n0) {
+        return res;
+      }
+
+      res.push(n0);
+      n = n0;
+    }
+
+    return res;
   }
 
   /**
@@ -36,3 +55,5 @@ class PrimeFinderActor {
     return true;
   }
 }
+
+export default PrimeFinder;

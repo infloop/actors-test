@@ -2,31 +2,44 @@ import * as _ from 'lodash';
 import {ActorSystem, createSystem} from 'comedy';
 import {Promise} from 'bluebird';
 
-function allSkippingErrors(promises) {
-  return Promise.all(
-    promises.map(p => p.catch(error => null))
-  )
+export interface Interval {
+  min: number;
+  max: number;
 }
 
-let maxNumber: number = Number.MAX_SAFE_INTEGER;
-let numWorkers = 16;
+function diviteToIntervals(end: number, n: number): Interval[] {
+  let size = Math.floor(end/n);
+  let r: Interval[] = [];
+
+  for (let i = 0; i < end; i+=size) {
+    r.push({ min: i, max: i+size});
+  }
+
+  return r;
+}
+
+let maxNumber: number = 100000;
+let numWorkers = 8;
 
 let actorSystem = createSystem({});
 
 let root: Promise<any> = actorSystem.rootActor(); // Get a root actor reference.
 
+let totalResult: number[] = [];
+
 root.then(rootActor => rootActor.createChild('/dist/test-01/actors/PrimeFinder', {
       mode: 'forked',
       clusterSize: numWorkers
     }))
-    .then(myActor => {
-      // Sequentially send 6 messages to our newly-created actor cluster.
-      // The messages will be load-balanced between 3 forked actors using
+    .then(actor => {
+      // Sequentially send 'numWorkers' messages to our newly-created actor cluster.
+      // The messages will be load-balanced between 'numWorkers' forked actors using
       // the default balancing strategy (round-robin).
-      return Promise.each(numWorkers, numbers => {
-        return myActor.sendAndReceive('calc', process.pid, numbers)
+      return Promise.each(diviteToIntervals(maxNumber, numWorkers), (interval: Interval) => {
+        return actor.sendAndReceive('findPrimes', interval.min, interval.max)
           .then(reply => {
-            console.log(`Actor replied: [${reply.numbers.join(',')}]`);
+            totalResult.push(...reply);
+            console.log(`Actor replied. min:${interval.min}, max:${interval.max}  length: [${reply.length}]`);
           });
       })
     })
